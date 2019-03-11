@@ -1,0 +1,8 @@
+.button {
+  list-style-type: none;
+  &--trip-start {
+    background-color: black;
+    height: 5em;
+    width: 5em;
+  }
+}

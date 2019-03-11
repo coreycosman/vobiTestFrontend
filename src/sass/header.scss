@@ -1,0 +1,24 @@
+@import 'variables';
+
+.header {
+  background-color: orange;
+  text-align: center;
+  &--nav {
+    width: 50%;
+    height: 50%;
+    float: right;
+    background-color: green;
+  }
+  &--title {
+    width: 40%;
+    height: 50%;
+    float: left;
+    background-color: green;
+  }
+  &--post {
+    padding: 0 1em 0 1em;
+  }
+  &--landing {
+    padding: 0 1em 0 1em;
+  }
+}

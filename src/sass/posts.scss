@@ -1,0 +1,13 @@
+.posts {
+  text-align: center;
+  &--header {
+    font-size: 2em;
+  }
+  &--title {
+    border: 0.15em solid black;
+    font-size: 1.5em;
+  }
+  &--description {
+    font-size: 0.75em;
+  }
+}

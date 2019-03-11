@@ -1,0 +1,11 @@
+.landing {
+  &--container {
+    height: 100vh;
+    &--card {
+      background-color: honeydew;
+      height: 100%;
+      width: 100%;
+      border: 0.05em solid black;
+    }
+  }
+}
