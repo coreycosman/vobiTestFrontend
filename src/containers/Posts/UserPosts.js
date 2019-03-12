@@ -10,10 +10,15 @@ import CreateComment from '../Comments/CreateComment';
 import ServerError from '../ServerError';
 import { Link } from 'react-router-dom';
 
-const joinActions = { ...postActions, ...commentActions };
+const actions = { ...postActions, ...commentActions };
 
 class UserPosts extends Component {
-  state = { showCommentForm: false, showComments: false, postId: '' };
+  state = {
+    showCommentForm: false,
+    showComments: false,
+    postId: '',
+    deletePostState: false,
+  };
 
   componentDidMount() {
     this.props.fetchUserPosts();
@@ -59,6 +64,15 @@ class UserPosts extends Component {
     }
   }
 
+  deletePost(postId) {
+    if (this.state.deletePostState) {
+      this.props.deletePost(postId, () => {
+        this.props.fetchUserPosts();
+        this.renderUserPosts();
+      });
+    }
+  }
+
   renderUserPosts() {
     const { userPosts } = this.props;
     if (userPosts && userPosts.length > 0) {
@@ -72,6 +86,7 @@ class UserPosts extends Component {
             <CreateComment postId={postId} />
             {this.renderCommentCount(postId)}
             {this.togglePostComments(postId)}
+            {this.deletePost(postId)}
             <button
               onClick={() => {
                 this.setState({
@@ -91,6 +106,13 @@ class UserPosts extends Component {
               }}
             >
               hide comments
+            </button>
+            <button
+              onClick={() => {
+                this.setState({ deletePostState: true });
+              }}
+            >
+              delete post
             </button>
           </div>
         );
@@ -131,5 +153,5 @@ function mapStateToProps({ postState, commentState }) {
 
 export default connect(
   mapStateToProps,
-  joinActions,
+  actions,
 )(withRouter(requireAuth(UserPosts)));

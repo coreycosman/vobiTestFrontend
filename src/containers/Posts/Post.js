@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import ServerError from '../ServerError';
 import CreateComment from '../Comments/CreateComment';
 import Header from '../Header';
-const joinActions = { ...postActions, ...commentActions };
+const actions = { ...postActions, ...commentActions };
 
 class Post extends Component {
   state = { showComments: false, postId: '' };
@@ -127,5 +127,5 @@ function mapStateToProps({ postState, commentState }) {
 
 export default connect(
   mapStateToProps,
-  joinActions,
+  actions,
 )(withRouter(Post));

@@ -11,7 +11,7 @@ export const FETCH_POST = 'fetch_post';
 export const RESET_CREATE_POST_STATE = 'reset_create_post_state';
 export const CREATE_POST_ERRORS = 'create_post_errors';
 export const RESET_POST_ERRORS = 'reset_post_errors';
-
+export const DELETE_POST = 'delete_post';
 // Comment & Comment Errors Types
 
 export const FETCH_ALL_COMMENTS = 'fetch_all_comments';

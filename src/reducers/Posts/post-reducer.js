@@ -4,6 +4,7 @@ import {
   FETCH_ALL_POSTS,
   FETCH_USER_POSTS,
   FETCH_POST,
+  DELETE_POST,
 } from '../../actions/types';
 
 const INITIAL_STATE = {
@@ -14,6 +15,7 @@ const INITIAL_STATE = {
     userPostsList: [],
   },
   post: {},
+  deleted: false,
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -34,6 +36,8 @@ export default function(state = INITIAL_STATE, action) {
           userPostsList: action.payload.userPosts,
         },
       };
+    case DELETE_POST:
+      return { ...state, deleted: true };
     default:
       return state;
   }

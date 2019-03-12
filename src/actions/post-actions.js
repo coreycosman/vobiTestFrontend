@@ -9,6 +9,7 @@ import {
   CREATE_POST_ERRORS,
   RESET_POST_ERRORS,
   SERVER_ERROR,
+  DELETE_POST,
 } from './types';
 
 export const createPost = (formProps, callback) => async dispatch => {
@@ -88,6 +89,20 @@ export const fetchPost = postId => async dispatch => {
   try {
     const res = await Api().post('posts/id', postId);
     dispatch({ type: FETCH_POST, payload: res.data.post });
+  } catch (e) {
+    console.log(e);
+    dispatch({
+      type: SERVER_ERROR,
+      payload: e.response.data.serverErrMessage,
+    });
+  }
+};
+
+export const deletePost = (postId, callback) => async dispatch => {
+  try {
+    const res = await Api().delete(`posts/${postId}`);
+    dispatch({ type: DELETE_POST, payload: res.data.deleted });
+    callback();
   } catch (e) {
     console.log(e);
     dispatch({
