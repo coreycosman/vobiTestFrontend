@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/post-actions';
 import PropTypes from 'prop-types';
 import ServerError from '../../containers/ServerError';
 import ToggleUserPostsComments from '../Comments/ToggleUserPostsComments';
 
-export default class RenderUserPosts extends Component {
+class RenderUserPosts extends Component {
+  state = {
+    deletePostState: false,
+    postId: '',
+  };
+
+  deletePost(postId) {
+    if (this.state.deletePostState && this.state.postId === postId) {
+      this.props.deletePost(postId, () => {
+        this.props.fetchUserPosts();
+        this.renderUserPosts();
+      });
+    }
+  }
+
   renderUserPosts() {
     const { searchTerm, userPosts } = this.props;
     if (searchTerm === '') {
@@ -62,6 +78,20 @@ export default class RenderUserPosts extends Component {
 }
 
 RenderUserPosts.propTypes = {
+  fetchAllPosts: PropTypes.func.isRequired,
+  fetchUserPosts: PropTypes.func.isRequired,
+
   userPosts: PropTypes.array.isRequired,
   searchTerm: PropTypes.string.isRequired,
 };
+
+function mapStateToProps({ postState }) {
+  return {
+    allPosts: postState.allPostsList,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  actions,
+)(RenderUserPosts);
