@@ -19,8 +19,6 @@ class CreateComment extends Component {
       setTimeout(() => {
         this.setState({ text: '', showCommentForm: false });
       }, 1000);
-
-      // this.props.fetchUserComments();
     });
   }
 
@@ -87,7 +85,6 @@ class CreateComment extends Component {
     );
   }
 }
-// <AllPostComments />
 
 CreateComment.propTypes = {
   createComment: PropTypes.func.isRequired,

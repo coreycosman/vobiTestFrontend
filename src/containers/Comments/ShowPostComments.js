@@ -12,7 +12,6 @@ class ShowPostComments extends Component {
   }
 
   togglePostComments() {
-    // debugger;
     const { postId } = this.props;
     const { allComments } = this.props;
     if (this.props.showComments && this.props.postIdState === postId) {

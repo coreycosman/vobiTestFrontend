@@ -6,7 +6,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Landing from './Landing';
 import UserPosts from '../containers/Posts/UserPosts';
-import Post from '../containers/Posts/Post';
+import Post from './Posts/Post';
 // sass
 import '../sass/css-loader.scss';
 

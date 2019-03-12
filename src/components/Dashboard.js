@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import requireAuth from './HigherOrderComponents/requireAuth';
 import Header from '../containers/Header';
-import AllPosts from './Posts/AllPosts';
+import AllPosts from '../containers/Posts/AllPosts';
 
 class Dashboard extends Component {
   render() {
