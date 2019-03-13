@@ -6,18 +6,13 @@ import ServerError from '../../containers/ServerError';
 import ToggleUserPostsComments from '../Comments/ToggleUserPostsComments';
 
 class RenderUserPosts extends Component {
-  state = {
-    deletePostState: false,
-    postId: '',
-  };
-
-  deletePost(postId) {
-    if (this.state.deletePostState && this.state.postId === postId) {
-      this.props.deletePost(postId, () => {
-        this.props.fetchUserPosts();
-        this.renderUserPosts();
-      });
-    }
+  deletePost(postId, e) {
+    e.preventDefault();
+    this.props.deletePost(postId, () => {
+      this.props.fetchUserPosts();
+      this.renderUserPosts();
+      this.renderFilteredUserPosts();
+    });
   }
 
   renderUserPosts() {
@@ -30,6 +25,12 @@ class RenderUserPosts extends Component {
               {post.title}
               <div className="posts posts--description">{post.description}</div>
               <ToggleUserPostsComments postId={post._id} />
+              <form
+                action="delete"
+                onSubmit={this.deletePost.bind(this, post._id)}
+              >
+                <button type="submit">delete post</button>
+              </form>
               <ServerError />
             </div>
           );
@@ -58,6 +59,12 @@ class RenderUserPosts extends Component {
               {post.title}
               <div className="posts posts--description">{post.description}</div>
               <ToggleUserPostsComments postId={post._id} />
+              <form
+                action="delete"
+                onSubmit={this.deletePost.bind(this, post._id)}
+              >
+                <button type="submit">delete post</button>
+              </form>
               <ServerError />
             </div>
           );
