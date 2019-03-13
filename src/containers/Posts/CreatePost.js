@@ -87,7 +87,7 @@ CreatePost.propTypes = {
 function mapStateToProps({ postState, postErrors }) {
   return {
     postCreated: postState.created,
-    postErrors: postErrors.postErrorsArray,
+    postErrors: postErrors.createPostErrorsArray,
   };
 }
 

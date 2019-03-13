@@ -6,32 +6,102 @@ import ServerError from '../../containers/ServerError';
 import ToggleUserPostsComments from '../Comments/ToggleUserPostsComments';
 
 class RenderUserPosts extends Component {
-  deletePost(postId, e) {
+  state = {
+    updateFormState: false,
+    postId: '',
+    title: '',
+    description: '',
+  };
+
+  updatePost(postId, e) {
     e.preventDefault();
-    this.props.deletePost(postId, () => {
+    const { title, description } = this.state;
+    const formProps = { title, description };
+    this.props.updatePost(postId, formProps, () => {
       this.props.fetchUserPosts();
-      this.renderUserPosts();
+      this.renderAllUserPosts();
       this.renderFilteredUserPosts();
     });
   }
 
-  renderUserPosts() {
+  deletePost(postId, e) {
+    e.preventDefault();
+    this.props.deletePost(postId, () => {
+      this.props.fetchUserPosts();
+      this.renderAllUserPosts();
+      this.renderFilteredUserPosts();
+    });
+  }
+
+  renderUpdateForm(postId) {
+    if (this.state.updateFormState && this.state.postId === postId) {
+      return (
+        <form action="patch" onSubmit={this.updatePost.bind(this, postId)}>
+          <input
+            value={this.state.title}
+            onChange={e => this.setState({ title: e.target.value })}
+            placeholder="title"
+            type="text"
+            name="title"
+          />
+          <input
+            value={this.state.description}
+            onChange={e => this.setState({ description: e.target.value })}
+            placeholder="description"
+            type="text"
+            name="description"
+          />
+          <button type="submit">update post</button>
+          {this.renderPostErrors()}
+        </form>
+      );
+    }
+  }
+
+  userPosts(postId, postTitle, postDescription) {
+    return (
+      <div className="posts posts--title">
+        {postTitle}
+        <div className="posts posts--description">{postDescription}</div>
+        <ToggleUserPostsComments postId={postId} />
+        <button
+          onClick={() => this.setState({ updateFormState: true, postId })}
+        >
+          update post
+        </button>
+        {this.renderUpdateForm(postId)}
+        <form action="delete" onSubmit={this.deletePost.bind(this, postId)}>
+          <button type="submit">delete post</button>
+        </form>
+        <ServerError />
+      </div>
+    );
+  }
+
+  renderPostErrors() {
+    const { postErrors } = this.props;
+    if (postErrors && postErrors.length > 0) {
+      setTimeout(() => {
+        this.props.resetPostErrorsState();
+      }, 10000);
+      return postErrors.map(errObject => {
+        return (
+          <div className="notifiers--errors" key={errObject.id}>
+            {errObject.errMessage}
+          </div>
+        );
+      });
+    }
+  }
+
+  renderAllUserPosts() {
     const { searchTerm, userPosts } = this.props;
     if (searchTerm === '') {
       if (userPosts && userPosts.length > 0) {
         return userPosts.map(post => {
           return (
-            <div key={post._id} className="posts posts--title">
-              {post.title}
-              <div className="posts posts--description">{post.description}</div>
-              <ToggleUserPostsComments postId={post._id} />
-              <form
-                action="delete"
-                onSubmit={this.deletePost.bind(this, post._id)}
-              >
-                <button type="submit">delete post</button>
-              </form>
-              <ServerError />
+            <div key={post._id}>
+              {this.userPosts(post._id, post.title, post.description)}
             </div>
           );
         });
@@ -55,18 +125,7 @@ class RenderUserPosts extends Component {
         });
         return filteredPosts.map(post => {
           return (
-            <div key={post._id} className="posts posts--title">
-              {post.title}
-              <div className="posts posts--description">{post.description}</div>
-              <ToggleUserPostsComments postId={post._id} />
-              <form
-                action="delete"
-                onSubmit={this.deletePost.bind(this, post._id)}
-              >
-                <button type="submit">delete post</button>
-              </form>
-              <ServerError />
-            </div>
+            <div>{this.userPosts(post._id, post.title, post.description)}</div>
           );
         });
       }
@@ -76,7 +135,7 @@ class RenderUserPosts extends Component {
   render() {
     return (
       <div>
-        {this.renderUserPosts()}
+        {this.renderAllUserPosts()}
         {this.renderFilteredUserPosts()}
         <ServerError />
       </div>
@@ -92,9 +151,10 @@ RenderUserPosts.propTypes = {
   searchTerm: PropTypes.string.isRequired,
 };
 
-function mapStateToProps({ postState }) {
+function mapStateToProps({ postState, postErrors }) {
   return {
     allPosts: postState.allPostsList,
+    postErrors: postErrors.updatePostErrorsArray,
   };
 }
 

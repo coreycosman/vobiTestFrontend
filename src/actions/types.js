@@ -5,11 +5,13 @@ export const LOGIN_ERRORS = 'login_errors';
 
 // Post & Post Errors Types
 export const CREATE_POST = 'create_post';
+export const UPDATE_POST = 'update_post';
 export const FETCH_ALL_POSTS = 'fetch_posts';
 export const FETCH_USER_POSTS = 'fetch_user_posts';
 export const FETCH_POST = 'fetch_post';
 export const RESET_CREATE_POST_STATE = 'reset_create_post_state';
 export const CREATE_POST_ERRORS = 'create_post_errors';
+export const UPDATE_POST_ERRORS = 'update_post_errors';
 export const RESET_POST_ERRORS = 'reset_post_errors';
 export const DELETE_POST = 'delete_post';
 // Comment & Comment Errors Types

@@ -5,8 +5,10 @@ import {
   FETCH_USER_POSTS,
   FETCH_POST,
   CREATE_POST,
+  UPDATE_POST,
   RESET_CREATE_POST_STATE,
   CREATE_POST_ERRORS,
+  UPDATE_POST_ERRORS,
   RESET_POST_ERRORS,
   SERVER_ERROR,
   DELETE_POST,
@@ -98,10 +100,34 @@ export const fetchPost = postId => async dispatch => {
   }
 };
 
+export const updatePost = (postId, formProps, callback) => async dispatch => {
+  const res = await Api()
+    .patch(`posts/${postId}`, formProps)
+    .catch(e => {
+      console.log(e.response.data);
+      dispatch({ type: UPDATE_POST_ERRORS, payload: e.response.data.errors });
+    });
+  if (res) {
+    try {
+      debugger;
+      dispatch({ type: UPDATE_POST, payload: res.data.updated });
+      // callback for page upload
+      callback();
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: SERVER_ERROR,
+        payload: e.response.data.serverErrMessage,
+      });
+    }
+  }
+};
+
 export const deletePost = (postId, callback) => async dispatch => {
   try {
     const res = await Api().delete(`posts/${postId}`);
     dispatch({ type: DELETE_POST, payload: res.data.deleted });
+    // callback for page upload
     callback();
   } catch (e) {
     console.log(e);

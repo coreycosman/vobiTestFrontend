@@ -1,5 +1,6 @@
 import {
   CREATE_POST,
+  UPDATE_POST,
   RESET_CREATE_POST_STATE,
   FETCH_ALL_POSTS,
   FETCH_USER_POSTS,
@@ -9,6 +10,7 @@ import {
 
 const INITIAL_STATE = {
   created: false,
+  updated: false,
   allPostsList: [],
   userData: {
     userName: '',
@@ -26,6 +28,8 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, post: action.payload };
     case CREATE_POST:
       return { ...state, created: action.payload };
+    case UPDATE_POST:
+      return { ...state, updated: action.payload };
     case RESET_CREATE_POST_STATE:
       return { ...state, created: action.payload };
     case FETCH_USER_POSTS:
